@@ -54,6 +54,7 @@ async def remindme(ctx, time, *, msg):
         return
 
     Reminder(dt, msg, user)
+	await ctx.send("I'll remind you then!")
 
 @bot.event
 async def on_ready():
