@@ -19,7 +19,7 @@ def parse_datetime(dt):
                              (?:(?P<hours>[0-9]{1,5})(?:hours?|h))?
                              (?:(?P<minutes>[0-9]{1,5})(?:minutes?|m))?
                              (?:(?P<seconds>[0-9]{1,5})(?:seconds?|s))?
-                          """, re.VERBOSE)
+                             """, re.VERBOSE)
 
 	match = compiled.fullmatch(dt)
 	if match is None or not match.group(0):
