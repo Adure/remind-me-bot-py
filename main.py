@@ -4,6 +4,7 @@ import discord
 from discord.ext import commands, buttons
 from datetime import datetime
 from dateutil import parser
+from dateutil import tz
 from dateutil.relativedelta import relativedelta
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 sched = AsyncIOScheduler()
@@ -24,7 +25,8 @@ def parse_datetime(dt):
 	match = compiled.fullmatch(dt)
 	if match is None or not match.group(0):
 		try:
-			dt = parser.parse(dt)
+			tzinfos = {"AEST": tz.gettz("Australia/Sydney")}
+			dt = parser.parse(dt, tzinfos=tzinfos)
 			return dt
 		except:
 			return None
@@ -64,7 +66,7 @@ class Session(buttons.Session):
 
 
 @bot.command()
-async def remindme(ctx, time, *, msg):
+async def remind(ctx, time, *, msg):
 	user = ctx.message.author
 
 	# Get due datetime
