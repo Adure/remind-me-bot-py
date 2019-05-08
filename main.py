@@ -13,13 +13,13 @@ bot = commands.Bot(command_prefix = "/")
 
 def parse_datetime(dt):
 	compiled = re.compile("""(?:(?P<years>[0-9])(?:years?|y))?
-							 (?:(?P<months>[0-9]{1,2})(?:months?|mo))?
-							 (?:(?P<weeks>[0-9]{1,4})(?:weeks?|w))?
-							 (?:(?P<days>[0-9]{1,5})(?:days?|d))?
-							 (?:(?P<hours>[0-9]{1,5})(?:hours?|h))?
-							 (?:(?P<minutes>[0-9]{1,5})(?:minutes?|m))?
-							 (?:(?P<seconds>[0-9]{1,5})(?:seconds?|s))?
-						  """, re.VERBOSE)
+                             (?:(?P<months>[0-9]{1,2})(?:months?|mo))?
+                             (?:(?P<weeks>[0-9]{1,4})(?:weeks?|w))?
+                             (?:(?P<days>[0-9]{1,5})(?:days?|d))?
+                             (?:(?P<hours>[0-9]{1,5})(?:hours?|h))?
+                             (?:(?P<minutes>[0-9]{1,5})(?:minutes?|m))?
+                             (?:(?P<seconds>[0-9]{1,5})(?:seconds?|s))?
+                          """, re.VERBOSE)
 
 	match = compiled.fullmatch(dt)
 	if match is None or not match.group(0):
