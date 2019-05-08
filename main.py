@@ -66,7 +66,7 @@ class Session(buttons.Session):
 
 
 @bot.command()
-async def remind(ctx, time, *, msg):
+async def remindme(ctx, time, *, msg):
 	user = ctx.message.author
 
 	# Get due datetime
