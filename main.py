@@ -25,8 +25,8 @@ def parse_datetime(dt):
 	match = compiled.fullmatch(dt)
 	if match is None or not match.group(0):
 		try:
-			tzinfos = {"AEST": tz.gettz("Australia/Sydney")}
-			dt = parser.parse(dt, tzinfos=tzinfos)
+			#tzinfos = {"AEST": tz.gettz("Australia/Sydney")}
+			dt = parser.parse(dt, tzinfos=tz.gettz("Australia/Sydney"))
 			return dt
 		except:
 			return None
@@ -38,13 +38,14 @@ def parse_datetime(dt):
 
 
 class Reminder:
-	def __init__(self, _datetime, msg, user, ctx, time):
+	def __init__(self, _datetime, msg, user, ctx, time, di):
 		self._datetime = _datetime
 		self.msg = msg
 		self.user = user
 		self.ctx = ctx
 		self.time = time
-		sched.add_job(self.send_reminder, 'date', run_date=self._datetime)
+		self.di = di
+		sched.add_job(self.send_reminder, self.di, run_date=self._datetime)
 
 	async def send_reminder(self):
 		await Session(self._datetime, self.msg, self.user, self.ctx, self.time).start(page=await self.user.send(self.msg), ctx=self.ctx)
@@ -69,19 +70,32 @@ class Session(buttons.Session):
 async def remindme(ctx, time, *, msg):
 	user = ctx.message.author
 
-	# Get due datetime
 	dt = parse_datetime(time)
 	if dt == None:
 		print('error resolving datetime')
 		await ctx.send('error resolving datetime')
 		return
 
-	# Create reminder to run at the given time, with the given message
-	Reminder(dt, msg, user, ctx, time)
+	Reminder(dt, msg, user, ctx, time, 'date')
 	await ctx.send("I'll remind you then!")
+
+# @bot.command()
+# async def reminder(ctx, interval, *, msg):
+# 	user = ctx.message.author
+#
+# 	dt = parse_datetime(time)
+# 	if dt == None:
+# 		print('error resolving datetime')
+# 		await ctx.send('error resolving datetime')
+# 		return
+#
+# 	Reminder(dt, msg, user, ctx, time, 'interval')
+# 	await ctx.send("I'll remind you then!")
+
 
 @bot.event
 async def on_ready():
-	print("Ready!")
+	print("Logged in!\n----------\n")
+	print(f"Connected to {len(bot.guilds)} guilds...  {', '.join([e.name for e in bot.guilds])}")
 
 bot.run(bot_token)
