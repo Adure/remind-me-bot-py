@@ -25,8 +25,8 @@ def parse_datetime(dt):
 	match = compiled.fullmatch(dt)
 	if match is None or not match.group(0):
 		try:
-            tzinfos = {"AEST": tz.gettz("Australia/Sydney")}
-            dt = parser.parse(f"{dt} AEST", tzinfos=tzinfos)
+			tzinfos = {"AEST": tz.gettz("Australia/Sydney")}
+			dt = parser.parse(f"{dt} AEST", tzinfos=tzinfos)
 			return dt
 		except:
 			return None
