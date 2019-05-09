@@ -25,8 +25,8 @@ def parse_datetime(dt):
 	match = compiled.fullmatch(dt)
 	if match is None or not match.group(0):
 		try:
-			#tzinfos = {"AEST": tz.gettz("Australia/Sydney")}
-			dt = parser.parse(dt, tzinfos=tz.gettz("Australia/Sydney"))
+            tzinfos = {"AEST": tz.gettz("Australia/Sydney")}
+            dt = parser.parse(f"{dt} AEST", tzinfos=tzinfos)
 			return dt
 		except:
 			return None
@@ -63,7 +63,7 @@ class Session(buttons.Session):
 	@buttons.button('🔁')
 	async def reschedule_reminder(self, ctx):
 		dt = parse_datetime(self.time)
-		Reminder(dt, self.msg, self.user, self.ctx, self.time)
+		Reminder(dt, self.msg, self.user, self.ctx, self.time, 'date')
 
 
 @bot.command()
