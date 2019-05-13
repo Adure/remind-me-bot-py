@@ -65,7 +65,7 @@ class Session(buttons.Session):
 		dt = parse_datetime(time)
 		if dt == None:
 			print('error resolving datetime')
-			await ctx.send('error resolving datetime')
+			await self.user.send('error resolving datetime')
 			return
 		Reminder(dt, self.msg, self.user, self.ctx, self.time, 'date')
 		await self.user.send('👍')
