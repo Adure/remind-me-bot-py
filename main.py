@@ -60,10 +60,43 @@ class Session(buttons.Session):
 		self.time = time
 		super().__init__(timeout=None, try_remove=True)
 
-	@buttons.button('🔁')
-	async def reschedule_reminder(self, ctx):
-		dt = parse_datetime(self.time)
+
+	async def parse_and_add_reminder(self, time):
+		dt = parse_datetime(time)
+		if dt == None:
+			print('error resolving datetime')
+			await ctx.send('error resolving datetime')
+			return
 		Reminder(dt, self.msg, self.user, self.ctx, self.time, 'date')
+		await self.user.send('👍')
+
+	@buttons.button('🔁', position=0)
+	async def reschedule_reminder(self, ctx, member):
+		await self.parse_and_add_reminder(self.time)
+
+	@buttons.button('other:577312039576272897', position=1)
+	async def choice_reschedule(self, ctx, member):
+		await self.user.send('When?:')
+		def check(m):
+			return m.guild == None and m.author == member
+		time = await bot.wait_for('message', check=check)
+		await self.parse_and_add_reminder(time.content)
+
+	@buttons.button('10_minutes:577312039689519124', position=2)
+	async def ten_min_reschedule(self, ctx, member):
+		await self.parse_and_add_reminder('10m')
+
+	@buttons.button('30_minutes:577312039672872976', position=3)
+	async def thirty_min_reschedule(self, ctx, member):
+		await self.parse_and_add_reminder('30m')
+
+	@buttons.button('1_hour:577312039702233088', position=4)
+	async def one_hour_reschedule(self, ctx, member):
+		await self.parse_and_add_reminder('1h')
+
+	@buttons.button('2_hours:577312039517683763', position=5)
+	async def two_hour_reschedule(self, ctx, member):
+		await self.parse_and_add_reminder('2h')
 
 
 @bot.command()
